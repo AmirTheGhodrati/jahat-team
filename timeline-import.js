@@ -8,7 +8,7 @@
     start: { label: 'تاریخ شروع', aliases: ['start', 'start date', 'from', 'شروع', 'آغاز'] },
     due: { label: 'مهلت / پایان *', aliases: ['due', 'deadline', 'due date', 'end date', 'target date', 'مهلت', 'ددلاین', 'پایان', 'سررسید'] },
     type: { label: 'نوع ردیف', aliases: ['type', 'kind', 'نوع', 'نوع کار', 'milestone type', 'is milestone'] },
-    parent: { label: 'هدف / نقطه عطف والد', aliases: ['parent', 'parent task', 'goal', 'phase', 'milestone', 'group', 'هدف', 'فاز', 'نقطه عطف', 'وابستگی'] },
+    parent: { label: 'هدف / نقطه عطف والد', aliases: ['parent', 'parent task', 'goal', 'phase', 'milestone', 'group', 'epic', 'workstream', 'هدف', 'فاز', 'نقطه عطف', 'وابستگی'] },
     assignee: { label: 'ایمیل مسئول', aliases: ['assignee', 'owner', 'assigned to', 'responsible', 'مسئول', 'مجری', 'ایمیل'] },
     status: { label: 'وضعیت', aliases: ['status', 'state', 'وضعیت', 'حالت'] },
     description: { label: 'جزئیات', aliases: ['description', 'details', 'notes', 'شرح', 'جزئیات', 'توضیحات'] },
@@ -116,7 +116,7 @@
       const start = parseDate(startValue) || settings?.start_date || due;
       const typeValue = pick(row, 'type');
       const milestone = isMilestone(typeValue);
-      const parentName = String(pick(row, 'parent') || (!milestone && typeValue && !/^(task|کار|عادی)$/i.test(normalize(typeValue)) ? typeValue : '')).trim();
+      const parentName = String(pick(row, 'parent') ?? '').trim();
       const rowData = {
         sourceRow: offset + 1,
         title,
