@@ -21,3 +21,6 @@ document.querySelector('#login-form').addEventListener('submit',async e=>{
  e.currentTarget.reset(); if(await activate()) location.reload();
 });
 document.querySelector('#logout').addEventListener('click',async()=>{await client.auth.signOut();location.reload()});
+document.querySelector('#change-password').addEventListener('click',()=>document.querySelector('#password-dialog').showModal());
+document.querySelector('#password-cancel').addEventListener('click',()=>document.querySelector('#password-dialog').close());
+document.querySelector('#password-form').addEventListener('submit',async e=>{e.preventDefault();const message=document.querySelector('#password-message');message.textContent='در حال ثبت…';const {error}=await client.auth.updateUser({password:new FormData(e.currentTarget).get('new_password')});if(error){message.textContent='تغییر رمز انجام نشد؛ لطفاً دوباره تلاش کنید.';return}e.currentTarget.reset();message.textContent='رمز تغییر کرد.';});
