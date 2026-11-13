@@ -1,0 +1,4 @@
+interface:
+  display_name: "Jahat Timeline Data"
+  short_description: "Build valid timeline import files"
+  default_prompt: "Create an import-ready timeline file using the project schema."
