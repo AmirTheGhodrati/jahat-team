@@ -59,6 +59,8 @@ create table public.timeline_tasks (
  assignee uuid references public.team_members(user_id),
  status text not null default 'todo' check(status in ('todo','doing','done')),
  milestone boolean not null default false,
+ milestone_id uuid references public.timeline_tasks(id) on delete set null,
+ constraint no_self_milestone check (milestone_id is null or milestone_id <> id),
  created_at timestamptz not null default now()
 );
 alter table public.timeline_tasks enable row level security;
