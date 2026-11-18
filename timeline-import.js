@@ -152,8 +152,12 @@
       if (!row.error && seen.has(signature)) row.error = 'این ردیف از قبل در تایم‌لاین هست';
       else if (!row.error) seen.add(signature);
       const parent = milestones.get(normalize(row.parentName));
-      if (!row.error && !row.milestone && parent?.error) row.error = 'تاریخ نقطه عطف والد معتبر نیست';
-      row.parentRef = parent && parent !== row && !row.milestone ? parent : null;
+      if (!row.error && row.parentName && parent === row) row.error = 'یک ددلاین نمی‌تواند والد خودش باشد';
+      if (!row.error && row.parentName && !parent) row.error = 'ددلاین والد پیدا نشد';
+      if (!row.error && parent?.error) row.error = 'ددلاین والد معتبر نیست';
+      if (!row.error && row.milestone && parent && (parent.parentName || parent.milestone_id)) row.error = 'والد ددلاین فرعی باید ددلاین اصلی باشد';
+      if (!row.error && parent && (row.start_date < parent.start_date || row.due_date > parent.due_date)) row.error = 'بازه خارج از ددلاین والد است';
+      row.parentRef = parent && parent !== row ? parent : null;
       return row;
     });
   }
@@ -276,7 +280,7 @@
 })();
 $('#download-template').addEventListener('click', event => {
   event.preventDefault();
-  const content = '\uFEFFعنوان,تاریخ شروع,مهلت,مسئول,وضعیت,نوع,هدف والد,جزئیات\nهدف نمونه,1405/08/22,1405/08/30,,شروع نشده,نقطه عطف,,\nیک کار نمونه,1405/08/22,1405/08/25,,شروع نشده,کار,هدف نمونه,\n';
+  const content = '\uFEFFعنوان,تاریخ شروع,مهلت,مسئول,وضعیت,نوع,هدف والد,جزئیات\nهدف نمونه,1405/08/22,1405/08/30,,شروع نشده,نقطه عطف,,\nددلاین فرعی نمونه,1405/08/22,1405/08/25,,شروع نشده,نقطه عطف,هدف نمونه,\nیک کار نمونه,1405/08/22,1405/08/25,,شروع نشده,کار,ددلاین فرعی نمونه,\n';
   const url = URL.createObjectURL(new Blob([content], { type: 'text/csv;charset=utf-8' }));
   const link = document.createElement('a');
   link.href = url;

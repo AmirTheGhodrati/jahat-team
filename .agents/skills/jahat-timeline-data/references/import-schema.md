@@ -14,7 +14,7 @@ Use these exact Persian headers for CSV/Excel, or the equivalent JSON keys below
 | `مسئول` | No | Exact team member email; unknown emails import unassigned |
 | `وضعیت` | No | `شروع نشده`, `در حال انجام`, or `انجام شده` |
 | `نوع` | No | `کار` or `نقطه عطف` |
-| `هدف والد` | No | Exact title of the milestone this task belongs to |
+| `هدف والد` | No | Exact title of the parent milestone for a task or sub-deadline |
 | `جزئیات` | No | Description, max 5,000 characters |
 
 *Every row needs at least one valid date. If start is omitted, the project start date is used when set, otherwise the due date is used. If due is omitted, the start date is also used. Include both dates whenever the source provides them.
@@ -25,7 +25,7 @@ Prefer ISO `YYYY-MM-DD` (for example `2026-11-13`). Gregorian `YYYY/MM/DD` and `
 
 ## Milestones and grouping
 
-An explicit milestone row uses `نوع = نقطه عطف`; its `عنوان` becomes the goal title. Child task rows use `نوع = کار` and set `هدف والد` to that exact title. Put milestone rows before their tasks for readability.
+An explicit milestone row uses `نوع = نقطه عطف`; its `عنوان` becomes the goal title. A sub-deadline also uses `نوع = نقطه عطف` and sets `هدف والد` to the exact main milestone title. A task uses `نوع = کار` and may refer to either milestone. Keep every child start and due date inside its parent range. Put milestone rows before their tasks for readability.
 
 A schedule may instead provide a group/phase name in a parent column without a separate milestone row. Preserve that name in `هدف والد`; the importer generates a milestone spanning the earliest child start through the latest child deadline. Do not turn arbitrary task categories or assignee names into milestones.
 
@@ -43,7 +43,8 @@ The `نوع` values recognized as milestones include `نقطه عطف`, `هدف`
 ```csv
 عنوان,تاریخ شروع,مهلت,مسئول,وضعیت,نوع,هدف والد,جزئیات
 راه‌اندازی کمپین,1405/08/22,1405/09/10,,شروع نشده,نقطه عطف,,هدف نمونه
-آماده‌سازی محتوا,1405/08/22,1405/08/28,,در حال انجام,کار,راه‌اندازی کمپین,نسخه اولیه و بازبینی
+آماده‌سازی,1405/08/22,1405/08/28,,در حال انجام,نقطه عطف,راه‌اندازی کمپین,هدف مرحله اول
+آماده‌سازی محتوا,1405/08/22,1405/08/28,,در حال انجام,کار,آماده‌سازی,نسخه اولیه و بازبینی
 انتشار کمپین,1405/08/29,1405/09/10,,شروع نشده,کار,راه‌اندازی کمپین,انتشار و کنترل نتیجه
 ```
 
